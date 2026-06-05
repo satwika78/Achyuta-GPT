@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Achyuta GPT</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <button class="scrim" type="button" id="scrim" aria-label="Close menu"></button>
+    <main class="app-shell">
+      <aside class="sidebar" aria-label="Conversation sidebar">
+        <div class="sidebar-top">
+          <div class="brand">
+            <div class="brand-mark" aria-hidden="true"><span></span></div>
+            <div>
+              <h1>Achyuta GPT</h1>
+              <p>Chat with Krishna</p>
+            </div>
+          </div>
+          <button class="new-chat" type="button" id="newChatButton">
+            <svg aria-hidden="true" viewBox="0 0 24 24">
+              <path d="M11 5h2v6h6v2h-6v6h-2v-6H5v-2h6V5Z" />
+            </svg>
+            New Chat
+          </button>
+        </div>
+
+        <nav class="history" aria-label="Chat history">
+          <p class="nav-label">Today</p>
+          <button class="history-item active" type="button">
+            <span>Restless mind</span>
+          </button>
+          <button class="history-item" type="button">
+            <span>Dharma at work</span>
+          </button>
+          <button class="history-item" type="button">
+            <span>Bhagavad Gita lesson</span>
+          </button>
+        </nav>
+
+        <div class="sidebar-footer">
+          <p class="mantra">ॐ नमो भगवते वासुदेवाय</p>
+          <p>Krishna-inspired guidance for reflection, calm, and duty.</p>
+        </div>
+      </aside>
+
+      <section class="chat-app" aria-label="Achyuta GPT chat">
+        <header class="topbar">
+          <button class="icon-button menu-button" type="button" id="menuButton" aria-label="Open menu">
+            <svg aria-hidden="true" viewBox="0 0 24 24">
+              <path d="M4 7h16v2H4V7Zm0 4h16v2H4v-2Zm0 4h16v2H4v-2Z" />
+            </svg>
+          </button>
+          <div>
+            <p>Achyuta GPT</p>
+            <span>Krishna-inspired chat companion</span>
+          </div>
+          <div class="status">
+            <span></span>
+            Ready
+          </div>
+        </header>
+
+        <div class="conversation" id="conversation">
+          <section class="welcome" id="welcome">
+            <div class="avatar-large">कृ</div>
+            <h2>What would you like to ask Krishna?</h2>
+            <p>
+              Ask about peace, focus, purpose, devotion, or a lesson from the
+              Bhagavad Gita.
+            </p>
+            <div class="suggestions">
+              <button type="button" data-prompt="How can I quiet my restless mind?">
+                Quiet my restless mind
+              </button>
+              <button type="button" data-prompt="What does Krishna teach about doing my duty?">
+                Duty and dharma
+              </button>
+              <button type="button" data-prompt="Give me one Bhagavad Gita lesson for today.">
+                Today's Gita lesson
+              </button>
+              <button type="button" data-prompt="How can I offer my work with devotion?">
+                Work with devotion
+              </button>
+            </div>
+          </section>
+
+          <section class="messages" id="messages" aria-live="polite"></section>
+        </div>
+
+        <form class="composer" id="chatForm">
+          <label class="sr-only" for="chatInput">Message Achyuta GPT</label>
+          <textarea
+            id="chatInput"
+            rows="1"
+            autocomplete="off"
+            placeholder="Message Achyuta GPT..."
+          ></textarea>
+          <button type="submit" aria-label="Send message">
+            <svg aria-hidden="true" viewBox="0 0 24 24">
+              <path d="M12 4 4 20l8-3 8 3-8-16Zm0 4.6 3.7 7.4-3.7-1.4L8.3 16 12 8.6Z" />
+            </svg>
+          </button>
+        </form>
+        <p class="disclaimer">
+          This is a front-end prototype with local Krishna-inspired responses.
+        </p>
+      </section>
+    </main>
+
+    <script src="script.js"></script>
+  </body>
+</html>
