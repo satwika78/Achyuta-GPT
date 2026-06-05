@@ -8,36 +8,6 @@ const menuButton = document.querySelector("#menuButton");
 const scrim = document.querySelector("#scrim");
 const history = document.querySelector(".history");
 
-const guidance = [
-  {
-    keywords: ["restless", "calm", "peace", "anxiety", "worried"],
-    response:
-      "When the mind is restless, begin with one breath and one sincere duty. Krishna teaches steadiness through practice: return again and again to what is true, kind, and useful."
-  },
-  {
-    keywords: ["duty", "dharma", "work", "career"],
-    response:
-      "Dharma is not always dramatic. Often it is the honest work before you, done without pride and without fear. Offer the action, and let the result arrive in its own time."
-  },
-  {
-    keywords: ["gita", "lesson", "teach"],
-    response:
-      "A lesson for today: you have control over your effort, not over every outcome. Let your intention be pure, your action steady, and your heart free from clinging."
-  },
-  {
-    keywords: ["devotion", "bhakti", "offer"],
-    response:
-      "Devotion can live inside ordinary moments. Speak gently, work honestly, remember the divine before beginning, and let even small actions become an offering."
-  }
-];
-
-const fallbackResponses = [
-  "Look at the question with a quiet heart. What choice would make you more truthful, compassionate, and steady?",
-  "Begin where you are. Krishna's path is not escape from life, but wise action within life.",
-  "Let the heart be soft and the mind be disciplined. When both move together, the next step becomes clearer.",
-  "Do not wait for perfect certainty. Act with sincerity, keep humility close, and learn from what unfolds."
-];
-
 function resizeInput() {
   input.style.height = "auto";
   input.style.height = `${Math.min(input.scrollHeight, 170)}px`;
@@ -79,25 +49,13 @@ function addMessage(text, type, options = {}) {
   return article;
 }
 
-function getResponse(prompt) {
-  const normalized = prompt.toLowerCase();
-  const match = guidance.find((item) =>
-    item.keywords.some((keyword) => normalized.includes(keyword))
-  );
-
-  if (match) {
-    return match.response;
-  }
-
-  return fallbackResponses[Math.floor(Math.random() * fallbackResponses.length)];
-}
-
 function updateHistoryTitle(text) {
   const active = document.querySelector(".history-item.active span");
   active.textContent = text.length > 28 ? `${text.slice(0, 28)}...` : text;
 }
 
-function sendMessage(text) {
+// Rewritten asynchronous function to stream responses from your live n8n backend
+async function sendMessage(text) {
   const cleanText = text.trim();
 
   if (!cleanText) {
@@ -110,11 +68,38 @@ function sendMessage(text) {
   input.value = "";
   resizeInput();
 
+  // 1. Render the temporary "Thinking..." placeholder bubble
   const typing = addMessage("Thinking", "bot", { typing: true });
-  window.setTimeout(() => {
+
+  try {
+    // 2. Fire the network API request directly to your active tunnel bridge
+    const response = await fetch("https://41200220de8cac.lhr.life/webhook/cc84de5c-54e0-49f5-8e25-5ec6ae202466/chat", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        action: "sendMessage",
+        sessionId: "vercel-web-session", // keeps simple session alignment
+        chatInput: cleanText
+      })
+    });
+
+    if (!response.ok) {
+      throw new Error("Local n8n network target down");
+    }
+
+    const data = await response.json();
+    
+    // 3. Clear the placeholder and render the real AI response generated from your Sheet data
     typing.remove();
-    addMessage(getResponse(cleanText), "bot");
-  }, 700);
+    addMessage(data.output || "I am reflecting on your query. Please try phrasing it another way.", "bot");
+
+  } catch (error) {
+    console.error("Error communicating with backend:", error);
+    typing.remove();
+    addMessage("I am currently having difficulty tapping into the cosmic data stream. Please make sure your computer tunnel is running in terminal!", "bot");
+  }
 }
 
 function resetChat() {
