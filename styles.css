@@ -406,6 +406,7 @@ svg {
   color: #eff2ff;
   line-height: 1.72;
   overflow-wrap: anywhere;
+  white-space: pre-line;
 }
 
 .typing .content p::after {
